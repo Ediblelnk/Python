@@ -2,7 +2,7 @@ import re
 
 sentence = 'The quick brown fox jumps over the lazy dog.'
 excerpt1 = 'I took a deep breath and listened to the old brag of my heart. I am, I am, I am.'
-excerpt2 = 'The most beautiful things in the world cannot be seen or touched, they are felt with the heart.'
+excerpt2 = 'The most beautiful things in the world can be seen and touched; they are felt with the heart.'
 repeated = 'The ants, dug, dug, dug, until they died for their queen.'
 all_caps = 'THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.'
 all_lower = 'this is all lowercase.'
