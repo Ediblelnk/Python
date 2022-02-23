@@ -134,7 +134,7 @@ while gameRunning:
 
 	#font format
 	fontColor = white
-	myFont = pygame.font.Font(r"P:\peter\Programs\Python\games\pong\bit5x3.ttf", 36*sizeFactor)
+	myFont = pygame.font.Font(r"pong\bit5x3.ttf", 36*sizeFactor)
 
 	#clock format
 	clock = pygame.time.Clock()
