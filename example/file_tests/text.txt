@@ -1,16 +1,10 @@
-Text is one of the most widespread forms of sequence data. 
-It can be understood as either a sequence of characters or 
-a sequence of words, but it’s most common to work at the 
-level of words. The deep-learning sequence-processing models 
-introduced in the following sections can use text to produce 
-a basic form of natural-l-anguage understanding, sufficient 
-for applications including document classification, sentiment 
-analysis, author identification, and even question-answering 
-(QA) (in a constrained context). Of course, keep in mind 
-throughout this chapter that none of these deep-learning models 
-truly understand text in a human sense; rather, these models 
-can map the statistical structure of written language, which 
-is sufficient to solve many simple textual tasks. Deep learning 
-for natural-language processing is pattern recognition applied 
-to words, sentences, and paragraphs, in much the same way that 
-computer vision is pattern recognition applied to pixels.
+give make use you get see my here your these want with
+thing then her our year even at in no when not one
+take we would your than very two they that his from those
+now well time want be if my thing year now from by
+of go will now they want would will you its could my
+use as his go the some how she their which man tell
+first new people into by tell go of there as because or
+she one know well then those their to how day in which
+think give think look with I do if we way with of
+way just take we only thing two we thing two up some
