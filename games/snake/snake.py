@@ -1,6 +1,7 @@
 #imports and starts the moduals needed to run the program
 import pygame 
 import sys
+import os
 import random
 
 pygame.init()
@@ -97,7 +98,7 @@ def setGameOver():
 	gameover = True
 	screen['color'] = colors['grey']
 	if score > high:
-		scorenew = open('SnakeHighScore.txt', 'w')
+		scorenew = open(os.path.join(os.path.dirname(__file__), r"high_score.txt"), 'w')
 		scorenew.write(str(score))
 		scorenew.close()
 
@@ -132,7 +133,7 @@ while(True):
 
 	#score format
 	score = 0
-	hightext = open(r'P:\peter\Programs\Python\games\snake\high_score.txt')
+	hightext = open(os.path.join(os.path.dirname(__file__), r"high_score.txt"))
 	high = int(hightext.read())
 	hightext.close()
 
@@ -147,7 +148,7 @@ while(True):
 	screen = {'width': block*columns + block//6, 'height': block*rows + block//6, 'color': colors['forest']}
 	display = pygame.display.set_mode((screen['width'], screen['height']))
 	scoreBox = {'XY': (0, screen['height']-block), 'width': screen['width'], 'height': block, 'color': colors['black'], 'border color': colors['white']}
-	font = {'color': colors['white'], 'font': pygame.font.Font(r"P:\peter\Programs\Python\games\snake\OBLIVIOUSFONT.TTF", 5*factor)}
+	font = {'color': colors['white'], 'font': pygame.font.Font(os.path.join(os.path.dirname(__file__), r"OBLIVIOUSFONT.TTF"), 5*factor)}
 
 	#display loop
 	gameover = False

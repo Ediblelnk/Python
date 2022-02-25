@@ -1,4 +1,5 @@
 import random
+import os
 
 def main(file):
     
@@ -30,7 +31,6 @@ def main(file):
     # 'r' is open for reading (default)
     with open(file, 'r', encoding='UTF-8') as tfile:
         t = tfile.read()
-        print(t, end='\n\n')
 
     # 'b' is binary mode
     with open(file, 'w') as tfile:
@@ -40,4 +40,5 @@ def main(file):
 
 
 if __name__ == "__main__":
-    main(r'example\file_tests\text.txt')
+
+    main(os.path.join(os.path.dirname(__file__), r"text.txt"))
