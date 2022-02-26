@@ -145,4 +145,14 @@ if re.match(egg, 'spam'):
 
 """
 special sequences
+\d - digits
+\s - whitespace
+\w - word characters
+\D - all EXCEPT digits
+\S - all EXCEPT whitespace
+\W - all EXCEPT word characters
+\A - beginning of a string
+\Z - end of a string
+\b - empty string between \w and \W characters
+\B - matches the empty string anywhere else
 """
