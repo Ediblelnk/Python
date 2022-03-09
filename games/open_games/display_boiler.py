@@ -5,26 +5,24 @@ import sys
 pygame.init()
 
 #screen format
-width = 960
-height = 540
+ratio = 16, 9
+factor = 120
+
+width, height = ratio[0]*factor, ratio[1]*factor
 screen = pygame.display.set_mode((width, height))
 
 #backround format
-background_color = (0,0,0)
+background_color = pygame.Color('lemonchiffon2')
 
 #clock format
 clock = pygame.time.Clock()
-clock_rate = 60
 
 #display loop
-gameover = False
-while not gameover:
-	for event in pygame.event.get():
-
-		if event.type == pygame.QUIT: #keeps the screen alive until the 'x' button is pressed
-			sys.exit()
+while True:
+	if pygame.event.get(pygame.QUIT):
+		sys.exit()
 
 	#handles displaying and refreshing the screen after each evauluation
-	clock.tick(clock_rate)
+	clock.tick()
 	screen.fill(background_color)
 	pygame.display.update()
