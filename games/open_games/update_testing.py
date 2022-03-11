@@ -14,8 +14,10 @@ width, height = ratio[0]*factor, ratio[1]*factor
 screen = pygame.display.set_mode((width, height))
 
 #blit format
-image = pygame.image.load(os.path.join(os.path.dirname(__file__), r"RockSml.jpg")).convert()
-rect = pygame.Rect(-100, -100, 100, 100)
+ref_image = pygame.image.load(os.path.join(os.path.dirname(__file__), r"RockSml.jpg")).convert()
+ref_image.set_colorkey(ref_image.get_at((0, 0)))
+image = ref_image
+rect = image.get_rect()
 
 #backround format
 background_color = pygame.Color('lemonchiffon3')
@@ -32,11 +34,12 @@ def load_screen():
 changed_rects = []
 def register_movement(rect: pygame.Rect):
 	"""registers rectanges of the screen as changed, to later be changed via 'update_changed()'"""
-	changed_rects.append(rect.inflate(2,2))
+	changed_rects.append(rect.inflate(rect.w*.3, rect.h*.3))
 
 
 def update_changed():
 	"""updates the parts of the screen that have been changed"""
+	print(changed_rects)
 	for changed in changed_rects:
 		pygame.display.update(changed)
 	screen.fill(background_color)
@@ -55,13 +58,14 @@ load_screen()
 while True:
 	if pygame.event.get(pygame.QUIT):
 		sys.exit()
+	pygame.event.clear()
+	rect = image.get_rect()
 
 	current_mouse_states = pygame.mouse.get_pressed()
 
 	if current_mouse_states[0] == True:
 		move_rock(pygame.mouse.get_pos())
-	if current_mouse_states[1] == True:
-		image = image.convert_alpha(5)
+		image = pygame.transform.rotate(ref_image, 360*(pygame.mouse.get_pos()[0] + pygame.mouse.get_pos()[1])/ width)
 	#handles displaying and refreshing the screen after each evauluation
 	clock.tick()
 	update_changed()
