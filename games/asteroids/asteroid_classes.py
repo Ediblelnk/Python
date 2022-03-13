@@ -9,7 +9,7 @@ class GameObject:
 
 	#image is a sprite set for this game, use specific regions of IMAGE when blitting
 	IMAGE = Image.load(os.path.join(os.path.dirname(__file__), r"asteroids_sprites.png"))
-	IMAGE.set_colorkey(IMAGE.get_at((0,0)))
+	#IMAGE.set_colorkey(IMAGE.get_at((0,0)))
 
 	def __init__(self, pos: tuple) -> None:
 		'''Defines a position for the GameObject'''
@@ -17,7 +17,7 @@ class GameObject:
 
 class Player(GameObject):
 
-	IMAGE_LOCATION = Rect(0, 0, 200, 200)
+	IMAGE_LOCATION = Rect(503, 242, 75, 104)
 	
 	def __init__(self, pos: tuple) -> None:
 		'''Creates a new Player with a defined position and velocity'''
@@ -26,7 +26,7 @@ class Player(GameObject):
 class Asteroid(GameObject):
 	
 	ASTEROID_L1 = Rect(0, 0, 200, 200)
-	ASTEROID_L2 = Rect(200, 0, 200, 200)
+	ASTEROID_L2 = Rect(200, 0, 185, 200)
 	ASTEROID_L3 = Rect(400, 0, 200, 200)
 	ASTEROID_M1 = Rect(0, 200, 200, 200)
 	ASTEROID_M2 = Rect(0, 200, 200, 200)
@@ -48,7 +48,7 @@ class Asteroid(GameObject):
 		'''Assigns a sprite location based on the size of the asteroid'''
 		match size:
 			case 2:
-				return random.choice(Asteroid.ASTEROIDS_LARGE)
+				return Asteroid.ASTEROID_L1
 			case 1:
 				return random.choice(Asteroid.ASTEROIDS_MEDIUM)
 			case _:
