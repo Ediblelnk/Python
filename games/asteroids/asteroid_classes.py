@@ -20,10 +20,22 @@ class GameObject:
 		self.rotation = rotation
 		self.rot_velocity = rot_velocity
 
+		self.ACCELERATION = 1000 #in pixels per second per second
+		self.adjusting_heading = False
+
 	def update(self, time_delta_ms: int) -> None:
 		'''Updates the position and rotation of a GameObject'''
 		self.pos += self.velocity * (time_delta_ms / 1000)
 		self.rotation += self.rot_velocity * (time_delta_ms / 1000)
+		if self.adjusting_heading:
+			self.adjust_heading(time_delta_ms)
+
+	def adjust_heading(self, time_delta_ms: int) -> None:
+		'''Adjusts the velocity of the player based on direction facing'''
+		v = Vector2(0,0)
+		v.from_polar((self.ACCELERATION, self.rotation - 90))
+		v.x *= -1
+		self.velocity += v * (time_delta_ms / 1000)
 
 class Player(GameObject):
 	
@@ -43,6 +55,7 @@ class Player(GameObject):
 		'''Gets the position of the player, centered, (use because of rotation)'''
 		image = self.get_image()
 		return self.pos - Vector2(image.get_width()/2, image.get_height()/2)
+
 
 class Asteroid(GameObject):
 

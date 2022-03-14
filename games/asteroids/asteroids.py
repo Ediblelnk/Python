@@ -15,7 +15,7 @@ factor = 760/ratio[0]
 width, height = ratio[0]*factor, ratio[1]*factor
 screen = pygame.display.set_mode((width, height))
 object1 = Saucer((0, 0), (50, 50), 0, 50)
-object2 = Player((width, 0), (-50, 50), 0, -50)
+object2 = Player((width, 0), (-10, 10), 0, 0)
 
 #backround format
 background_color = pygame.Color('black')
@@ -28,6 +28,21 @@ while True:
 
 	if pygame.event.get(pygame.QUIT):
 		sys.exit()
+
+	keydowns = pygame.event.get(pygame.KEYDOWN)
+	keyups = pygame.event.get(pygame.KEYUP)
+	for keydown in keydowns:
+		if keydown.key == pygame.K_LEFT:
+			object2.rot_velocity = 1000
+		elif keydown.key == pygame.K_RIGHT:
+			object2.rot_velocity = -1000
+		elif keydown.key == pygame.K_UP:
+			object2.adjusting_heading = True
+	for keyup in keyups:
+		if keyup.key == pygame.K_LEFT or keyup.key == pygame.K_RIGHT:
+			object2.rot_velocity = 0
+		if keyup.key == pygame.K_UP:
+			object2.adjusting_heading = False
 
 	#handles displaying and refreshing the screen after each evauluation
 
