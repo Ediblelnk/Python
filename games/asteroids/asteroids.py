@@ -10,14 +10,15 @@ pygame.init()
 
 #screen format
 ratio = 4, 3
-factor = 1440/ratio[0]
+factor = 760/ratio[0]
 
 width, height = ratio[0]*factor, ratio[1]*factor
 screen = pygame.display.set_mode((width, height))
-p = Player((0, 0), (50, 50), 0, 50)
+object1 = Saucer((0, 0), (50, 50), 0, 50)
+object2 = Player((width, 0), (-50, 50), 0, -50)
 
 #backround format
-background_color = pygame.Color('darkolivegreen')
+background_color = pygame.Color('black')
 
 #clock format
 clock = pygame.time.Clock()
@@ -30,9 +31,11 @@ while True:
 
 	#handles displaying and refreshing the screen after each evauluation
 
-	p.update(clock.get_time())
+	object1.update(clock.get_time())
+	object2.update(clock.get_time())
 
 	clock.tick(144)
 	screen.fill(background_color)
-	screen.blit(p.get_image(), p.get_pos())
+	screen.blit(object1.get_image(), object1.get_pos())
+	screen.blit(object2.get_image(), object2.get_pos())
 	pygame.display.update()
