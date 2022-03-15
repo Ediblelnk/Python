@@ -1,7 +1,9 @@
+from multiprocessing import Event
 from pygame.math import Vector2
 from pygame import Surface
 from pygame.transform import rotate
 import pygame.image as Image
+import pygame
 import os.path
 import random
 
@@ -13,15 +15,17 @@ def _load_image(file_within_sprites: str) -> Surface:
 class GameObject:
 	'''Most basic form of a object in the game.'''
 
-	def __init__(self, pos: tuple, velocity: tuple, rotation: float, rot_velocity: float) -> None:
+	def __init__(self, pos: tuple, velocity: tuple = (0, 0), rotation: float = 0.0, rot_velocity: float = 0.0) -> None:
 		'''Creates a new GameObject with position, velocity, rotation, and rotational velocity'''
 		self.pos = Vector2(pos)
 		self.velocity = Vector2(velocity)
 		self.rotation = rotation
 		self.rot_velocity = rot_velocity
-
-		self.ACCELERATION = 300 #in pixels per second per second
 		self.adjusting_heading = False
+
+		self.ACCELERATION = 360 #in pixels per second per second
+		self.ROT_SPEED = 360
+		self.VELOCITY_DECAY = 1	#should be one for every object other than player
 
 	def update(self, time_delta_ms: int) -> None:
 		'''Updates the position and rotation of a GameObject'''
@@ -30,12 +34,33 @@ class GameObject:
 		if self.adjusting_heading:
 			self.adjust_heading(time_delta_ms)
 
+		#decays the velocity of the GameObject based on time that has passed
+		#only players should be affected by this adjustment
+		self.velocity *= self.VELOCITY_DECAY**time_delta_ms
+
 	def adjust_heading(self, time_delta_ms: int) -> None:
 		'''Adjusts the velocity of the player based on direction facing'''
 		v = Vector2(0,0)
 		v.from_polar((self.ACCELERATION, self.rotation - 90))
 		v.x *= -1
 		self.velocity += v * (time_delta_ms / 1000)
+
+	def handle_keypresses(self, keydowns: list, keyups: list) -> None:
+		'''Handles the keypresses which control the GameObject'''
+
+		for keydown in keydowns:
+			if keydown.key == pygame.K_LEFT:
+				self.rot_velocity = self.ROT_SPEED
+			elif keydown.key == pygame.K_RIGHT:
+				self.rot_velocity = -self.ROT_SPEED
+			elif keydown.key == pygame.K_UP:
+				self.adjusting_heading = True
+
+		for keyup in keyups:
+			if keyup.key == pygame.K_LEFT or keyup.key == pygame.K_RIGHT:
+				self.rot_velocity = 0
+			if keyup.key == pygame.K_UP:
+				self.adjusting_heading = False
 
 class Player(GameObject):
 	
@@ -44,6 +69,9 @@ class Player(GameObject):
 		super().__init__(pos, velocity, rotation, rot_velocity)
 		self._IMAGE = _load_image(r'player.png')
 		self._IMAGE.set_colorkey(self._IMAGE.get_at((0, 0)))
+
+		#redefine the velocity decay for a player, acts as an "auto-braking system" when playing
+		self.VELOCITY_DECAY = .9995
 
 	def get_image(self) -> Surface:
 		'''Gets the image to use for the player, (use because of rotation)'''
@@ -54,8 +82,7 @@ class Player(GameObject):
 	def get_pos(self) -> Vector2:
 		'''Gets the position of the player, centered, (use because of rotation)'''
 		image = self.get_image()
-		return self.pos - Vector2(image.get_width()/2, image.get_height()/2)
-
+		return self.pos - Vector2(image.get_width()/2, image.get_height()/2)		
 
 class Asteroid(GameObject):
 
