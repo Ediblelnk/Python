@@ -33,9 +33,9 @@ while True:
 	keyups = pygame.event.get(pygame.KEYUP)
 	for keydown in keydowns:
 		if keydown.key == pygame.K_LEFT:
-			object2.rot_velocity = 1000
+			object2.rot_velocity = 300
 		elif keydown.key == pygame.K_RIGHT:
-			object2.rot_velocity = -1000
+			object2.rot_velocity = -300
 		elif keydown.key == pygame.K_UP:
 			object2.adjusting_heading = True
 	for keyup in keyups:

@@ -20,7 +20,7 @@ class GameObject:
 		self.rotation = rotation
 		self.rot_velocity = rot_velocity
 
-		self.ACCELERATION = 1000 #in pixels per second per second
+		self.ACCELERATION = 300 #in pixels per second per second
 		self.adjusting_heading = False
 
 	def update(self, time_delta_ms: int) -> None:
