@@ -1,4 +1,3 @@
-from multiprocessing import Event
 from pygame.math import Vector2
 from pygame import Surface
 from pygame.transform import rotate
@@ -15,8 +14,10 @@ def _load_image(file_within_sprites: str) -> Surface:
 class GameObject:
 	'''Most basic form of a object in the game.'''
 
-	ACCELERATION = 360 #in pixels per second per second
-	MAX_SPEED = 1000 #in pixels per second
+	ACCELERATION: int = 360 #in pixels per second per second
+	MAX_SPEED: int = 500 #in pixels per second
+	ROT_ACCEL: int = 1800 #in degrees per second per second
+	MAX_ROT_VEL: int = 540 #in degrees per second
 
 	def __init__(self, pos: tuple, velocity: tuple = (0, 0), rotation: float = 0.0, rot_velocity: float = 0.0) -> None:
 		'''Creates a new GameObject with position, velocity, rotation, and rotational velocity'''
@@ -24,9 +25,11 @@ class GameObject:
 		self.velocity = Vector2(velocity)
 		self.rotation = rotation
 		self.rot_velocity = rot_velocity
-		self.adjusting_heading = False
 
-		self.ROT_SPEED = 360
+		self.adjusting_heading = False
+		self.adjusting_rot_heading = 0
+
+		self.ROT_SPEED_DECAY = 1 #should be one for every object other than player
 		self.VELOCITY_DECAY = 1	#should be one for every object other than player
 
 
@@ -34,12 +37,14 @@ class GameObject:
 		'''Updates the position and rotation of a GameObject'''
 		self.pos += self.velocity * (time_delta_ms / 1000)
 		self.rotation += self.rot_velocity * (time_delta_ms / 1000)
-		if self.adjusting_heading:
-			self.adjust_heading(time_delta_ms)
+
+		if self.adjusting_heading: self.adjust_heading(time_delta_ms)
+		if self.adjusting_rot_heading != 0: self.adjust_rot_heading(time_delta_ms)
 
 		#decays the velocity of the GameObject based on time that has passed
 		#only players should be affected by this adjustment
-		self.velocity *= self.VELOCITY_DECAY**time_delta_ms
+		self.velocity *= self.VELOCITY_DECAY**(time_delta_ms / 1000)
+		self.rot_velocity *= self.ROT_SPEED_DECAY**(time_delta_ms / 1000)
 
 	def adjust_heading(self, time_delta_ms: int) -> None:
 		'''Adjusts the velocity of the player based on direction facing'''
@@ -48,24 +53,33 @@ class GameObject:
 		v.x *= -1
 		self.velocity += v * (time_delta_ms / 1000)
 
-		#limits the speed of the game object so that it cannot exceed max speed
-		if self.velocity.length() > GameObject.MAX_SPEED:
-			self.velocity.scale_to_length(GameObject.MAX_SPEED)
+		#limits the speed of the game object so that it cannot exceed max speeds
+		if self.velocity.length() > self.MAX_SPEED:
+			self.velocity.scale_to_length(self.MAX_SPEED)
+
+	def adjust_rot_heading(self, time_delta_ms: int) -> None:
+		'''Adjusts the rotational velocity of the player'''
+		self.rot_velocity += self.ROT_ACCEL * (time_delta_ms / 1000) * self.adjusting_rot_heading
+
+		if abs(self.rot_velocity) > self.MAX_ROT_VEL:
+			self.rot_velocity = self.MAX_ROT_VEL * (-1 if self.rot_velocity < 0 else 1)
 
 	def handle_keypresses(self, keydowns: list, keyups: list) -> None:
 		'''Handles the keypresses which control the GameObject'''
 
 		for keydown in keydowns:
 			if keydown.key == pygame.K_LEFT:
-				self.rot_velocity = self.ROT_SPEED
+				self.adjusting_rot_heading += 1
 			elif keydown.key == pygame.K_RIGHT:
-				self.rot_velocity = -self.ROT_SPEED
+				self.adjusting_rot_heading -= 1
 			elif keydown.key == pygame.K_UP:
 				self.adjusting_heading = True
 
 		for keyup in keyups:
-			if keyup.key == pygame.K_LEFT or keyup.key == pygame.K_RIGHT:
-				self.rot_velocity = 0
+			if keyup.key == pygame.K_LEFT:
+				self.adjusting_rot_heading -= 1
+			if keyup.key == pygame.K_RIGHT:
+				self.adjusting_rot_heading += 1
 			if keyup.key == pygame.K_UP:
 				self.adjusting_heading = False
 
@@ -74,11 +88,11 @@ class Player(GameObject):
 	def __init__(self, pos: tuple, velocity: tuple, rotation: float, rot_velocity: float) -> None:
 		'''Creates a new Player with position, velocity, rotation, and rotational velocity'''
 		super().__init__(pos, velocity, rotation, rot_velocity)
-		self._IMAGE = _load_image(r'player.png')
+		self._IMAGE = _load_image(r'player2.png')
 		self._IMAGE.set_colorkey(self._IMAGE.get_at((0, 0)))
 
-		#redefine the velocity decay for a player, acts as an "auto-braking system" when playing
-		self.VELOCITY_DECAY = .9995
+		self.VELOCITY_DECAY = .6
+		self.ROT_SPEED_DECAY = .005
 
 	def get_image(self) -> Surface:
 		'''Gets the image to use for the player, (use because of rotation)'''
