@@ -10,10 +10,13 @@ import random
 def _load_image(file_within_sprites: str) -> Surface:
 	'''shorthand method to avoid ghastly repetition of code'''
 	_base = os.path.join(os.path.dirname(__file__), r"sprites")
-	return Image.load(os.path.join(_base, file_within_sprites))#.convert()
+	return Image.load(os.path.join(_base, file_within_sprites))
 
 class GameObject:
 	'''Most basic form of a object in the game.'''
+
+	ACCELERATION = 360 #in pixels per second per second
+	MAX_SPEED = 1000 #in pixels per second
 
 	def __init__(self, pos: tuple, velocity: tuple = (0, 0), rotation: float = 0.0, rot_velocity: float = 0.0) -> None:
 		'''Creates a new GameObject with position, velocity, rotation, and rotational velocity'''
@@ -23,9 +26,9 @@ class GameObject:
 		self.rot_velocity = rot_velocity
 		self.adjusting_heading = False
 
-		self.ACCELERATION = 360 #in pixels per second per second
 		self.ROT_SPEED = 360
 		self.VELOCITY_DECAY = 1	#should be one for every object other than player
+
 
 	def update(self, time_delta_ms: int) -> None:
 		'''Updates the position and rotation of a GameObject'''
@@ -44,6 +47,10 @@ class GameObject:
 		v.from_polar((self.ACCELERATION, self.rotation - 90))
 		v.x *= -1
 		self.velocity += v * (time_delta_ms / 1000)
+
+		#limits the speed of the game object so that it cannot exceed max speed
+		if self.velocity.length() > GameObject.MAX_SPEED:
+			self.velocity.scale_to_length(GameObject.MAX_SPEED)
 
 	def handle_keypresses(self, keydowns: list, keyups: list) -> None:
 		'''Handles the keypresses which control the GameObject'''
@@ -82,7 +89,15 @@ class Player(GameObject):
 	def get_pos(self) -> Vector2:
 		'''Gets the position of the player, centered, (use because of rotation)'''
 		image = self.get_image()
-		return self.pos - Vector2(image.get_width()/2, image.get_height()/2)		
+		return self.pos - Vector2(image.get_width()/2, image.get_height()/2)
+
+	def set_pos(self, x: int, y: int, summation_invert=False) -> None:
+		'''sets the position of the saucer'''
+		image = self.get_image()
+		if not summation_invert:
+			self.pos = Vector2(x, y) - Vector2(image.get_width()/2, image.get_height()/2)	
+		else:
+			self.pos = Vector2(x, y) + Vector2(image.get_width()/2, image.get_height()/2)
 
 class Asteroid(GameObject):
 
@@ -121,6 +136,14 @@ class Asteroid(GameObject):
 		image = self.get_image()
 		return self.pos - Vector2(image.get_width()/2, image.get_height()/2)
 
+	def set_pos(self, x: int, y: int, summation_invert=False) -> None:
+		'''sets the position of the saucer'''
+		image = self.get_image()
+		if not summation_invert:
+			self.pos = Vector2(x, y) - Vector2(image.get_width()/2, image.get_height()/2)	
+		else:
+			self.pos = Vector2(x, y) + Vector2(image.get_width()/2, image.get_height()/2)
+
 class Saucer(GameObject):
 	
 	SAUCERS = _load_image(r'saucer_2.png'), _load_image(r'saucer_3.png')
@@ -139,7 +162,15 @@ class Saucer(GameObject):
 	def get_pos(self) -> Vector2:
 		'''Gets the position of the saucer, centered, (use because of rotation)'''
 		image = self.get_image()
-		return self.pos - Vector2(image.get_width()/2, image.get_height()/2)	
+		return self.pos - Vector2(image.get_width()/2, image.get_height()/2)
+
+	def set_pos(self, x: int, y: int, summation_invert=False) -> None:
+		'''sets the position of the saucer'''
+		image = self.get_image()
+		if not summation_invert:
+			self.pos = Vector2(x, y) - Vector2(image.get_width()/2, image.get_height()/2)	
+		else:
+			self.pos = Vector2(x, y) + Vector2(image.get_width()/2, image.get_height()/2)
 
 def main():
 	print("It Compiled!")
