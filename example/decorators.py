@@ -1,9 +1,6 @@
 """
 Basic stuff on how decorators can work in Python.
 
-Covers:
-
-
 """
 
 import functools
