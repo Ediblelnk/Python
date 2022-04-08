@@ -8,7 +8,7 @@ pygame.init()
 
 
 class Window:
-    RATIO = 1, 1, 1
+    RATIO = 3, 2, 3
     HEIGHT = 720
     WIDTH = HEIGHT * RATIO[0] // RATIO[1]
     DEPTH = HEIGHT * RATIO[0] // RATIO[2]
