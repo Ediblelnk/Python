@@ -3,13 +3,14 @@ import pygame
 import sys
 import random
 from pygame.math import Vector3 as V
+import math
 
 pygame.init()
 
 
 class Window:
-    RATIO = 3, 2, 3
-    HEIGHT = 720
+    RATIO = 1, 1, 1
+    HEIGHT = 500
     WIDTH = HEIGHT * RATIO[0] // RATIO[1]
     DEPTH = HEIGHT * RATIO[0] // RATIO[2]
     COLOR = pygame.Color('yellow')
@@ -18,7 +19,7 @@ class Window:
     TICK_RATE = 144
     MAX_DOTS = 700
     DOTS_PER_SECOND = round(MAX_DOTS)
-    ZOOM = HEIGHT/3
+    ZOOM = 1
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     line_color = pygame.Color('black')
@@ -72,8 +73,10 @@ class Dots:
         for p in cls.ps:
             dt = win.get_sec() * win.TIME_FACTOR
             d = V(0, 0, 0)
-            #d.x, d.y, d.z = (p.y-p.x) * dt, (p.x*(10 - p.z) - p.y) * dt, p.x * p.y - p.z
-            d.x, d.y, d.z = dt, p.x**2 * dt, 0
+            # d.x, d.y, d.z = dt, p.x**2 * dt, 0 # parabolic
+            # d.x, d.y, d.z = math.sin(p.x * dt), math.sin(p.y * dt), 0 # infinite zoom
+            # d.x, d.y, d.z = -p.y*dt, p.x*dt, 0 # counter clock-wise circle
+            # d.x, d.y, d.z = p.y*dt, -p.x*dt, 0  # clock-wise circle
             p += d
 
 
