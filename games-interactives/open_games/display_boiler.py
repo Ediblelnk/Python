@@ -18,10 +18,12 @@ class Window:
     @classmethod
     def tick(cls, fps=MAX_FPS):
         cls.clock.tick(fps)
+        return cls
 
     @classmethod
     def fill(cls, color=COLOR):
         cls.screen.fill(color)
+        return cls
 
     @classmethod
     def update(cls, *rect_list):
@@ -32,6 +34,7 @@ class Window:
                 pygame.display.update(rect_list)
             except ValueError:
                 pygame.display.update(*rect_list)
+        return cls
 
 
 # display loop
@@ -39,6 +42,4 @@ while True:
     if pygame.event.get(pygame.QUIT):
         sys.exit()
 
-    Window.tick()
-    Window.fill()
-    Window.update()
+    Window.tick().fill().update()
