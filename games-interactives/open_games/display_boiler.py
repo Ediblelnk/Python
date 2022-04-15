@@ -1,29 +1,31 @@
-#imports and starts the moduals needed to run the program
-import pygame 
+# imports and starts the moduals needed to run the program
+import pygame
 import sys
 
 pygame.init()
 
-#screen format
-ratio = 16, 9
 
-height = 720
-width = height * ratio[0] // ratio[1]
+class Window:
+    RATIO = 16, 9
+    HEIGHT = 720
+    WIDTH = HEIGHT * RATIO[0] // RATIO[1]
+    COLOR = pygame.Color('darkgreen')
+    MAX_FPS = 144
 
-screen = pygame.display.set_mode((width, height))
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    clock = pygame.time.Clock()
 
-#backround format
-background_color = pygame.Color('darkgreen')
+    @classmethod
+    def tick(cls, fps=MAX_FPS):
+        cls.clock.tick(fps)
 
-#clock format
-clock = pygame.time.Clock()
 
-#display loop
+# display loop
 while True:
-	if pygame.event.get(pygame.QUIT):
-		sys.exit()
+    if pygame.event.get(pygame.QUIT):
+        sys.exit()
 
-	#handles displaying and refreshing the screen after each evauluation
-	clock.tick()
-	screen.fill(background_color)
-	pygame.display.update()
+    # handles displaying and refreshing the screen after each evauluation
+    Window.clock.tick()
+    Window.screen.fill(Window.COLOR)
+    pygame.display.update()
