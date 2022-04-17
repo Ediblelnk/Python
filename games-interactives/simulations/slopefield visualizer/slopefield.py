@@ -75,7 +75,7 @@ class Dots:
             d = V(0, 0, 0)
             # d.x, d.y, d.z = dt, p.x**2 * dt, 0 # parabolic
             # d.x, d.y, d.z = math.sin(p.x * dt), math.sin(p.y * dt), 0 # infinite zoom
-            # d.x, d.y, d.z = -p.y*dt, p.x*dt, 0 # counter clock-wise circle
+            d.x, d.y, d.z = -p.y*dt, p.x*dt, 0 # counter clock-wise circle
             # d.x, d.y, d.z = p.y*dt, -p.x*dt, 0  # clock-wise circle
             p += d
 
