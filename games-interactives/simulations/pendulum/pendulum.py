@@ -71,8 +71,8 @@ class Pendulum:
 
     def update(self, dt: int):
         self.vel += (self.GRAVITY + self.tension) * dt / 1000
-        self._control_length()
         self.pos += self.vel * dt / 1000
+        self._control_length()
         return self
 
     def _control_length(self):
@@ -81,7 +81,7 @@ class Pendulum:
         self.pos = self.pivot + i
 
 # display loop
-p = Pendulum(V(Window.WIDTH//2, Window.HEIGHT//4), V(-200, 0), V(0, 50), pygame.Color('white'))
+p = Pendulum(V(Window.WIDTH//2, Window.HEIGHT//4), V(-200, 0), V(0, 100), pygame.Color('white'))
 while True:
     if pygame.event.get(pygame.QUIT):
         sys.exit()
