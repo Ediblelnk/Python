@@ -9,10 +9,10 @@ pygame.init()
 
 class Window:
   RATIO = 1, 1
-  HEIGHT = 1080
+  HEIGHT = 540
   WIDTH = HEIGHT * RATIO[0] // RATIO[1]
   COLOR = pygame.Color('black')
-  MAX_FPS = 144
+  MAX_FPS = 120
 
   screen = pygame.display.set_mode((WIDTH, HEIGHT))
   clock = pygame.time.Clock()
@@ -75,26 +75,30 @@ class Space:
   THIRD_H = W.HEIGHT//3
   THIRD_W = W.WIDTH//3
 
+  t = [Object(V(THIRD_W, THIRD_H), V(y := 70, -y), x := 100, z := 10, a := C('orange')),
+       Object(V(2*THIRD_W, THIRD_H), V(y, y), x//2, z, a),
+       Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x//4, z, a)]
+  """
   o = [Object(V(THIRD_W, THIRD_H), V(y := 70, -y), x := 10, z := 10, a := C('red')),
-       Object(V(2*THIRD_W, THIRD_H), V(y, y), x, z, a),
-       Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x, z, a),
-       Object(V(2*THIRD_W, 2*THIRD_H), V(-y, y), x, z, a)]
+      Object(V(2*THIRD_W, THIRD_H), V(y, y), x, z, a),
+      Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x, z, a),
+      Object(V(2*THIRD_W, 2*THIRD_H), V(-y, y), x, z, a)]
 
-  p = [Object(V(THIRD_W, THIRD_H), V(y := y-1, -y), x := 10, z := 10, a := C('orange')),
-       Object(V(2*THIRD_W, THIRD_H), V(y, y), x, z, a),
-       Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x, z, a),
-       Object(V(2*THIRD_W, 2*THIRD_H), V(-y, y), x, z, a)]
+  p = [Object(V(THIRD_W, THIRD_H), V(y := y-10, -y), x := 10, z := 10, a := C('orange')),
+      Object(V(2*THIRD_W, THIRD_H), V(y, y), x, z, a),
+      Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x, z, a),
+      Object(V(2*THIRD_W, 2*THIRD_H), V(-y, y), x, z, a)]
 
-  q = [Object(V(THIRD_W, THIRD_H), V(y := y-1, -y), x := 10, z := 10, a := C('yellow')),
-       Object(V(2*THIRD_W, THIRD_H), V(y, y), x, z, a),
-       Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x, z, a),
-       Object(V(2*THIRD_W, 2*THIRD_H), V(-y, y), x, z, a)]
+  q = [Object(V(THIRD_W, THIRD_H), V(y := y-10, -y), x := 10, z := 10, a := C('yellow')),
+      Object(V(2*THIRD_W, THIRD_H), V(y, y), x, z, a),
+      Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x, z, a),
+      Object(V(2*THIRD_W, 2*THIRD_H), V(-y, y), x, z, a)]
 
-  r = [Object(V(THIRD_W, THIRD_H), V(y := y-1, -y), x := 10, z := 10, a := C('white')),
-       Object(V(2*THIRD_W, THIRD_H), V(y, y), x, z, a),
-       Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x, z, a),
-       Object(V(2*THIRD_W, 2*THIRD_H), V(-y, y), x, z, a)]
-  
+  r = [Object(V(THIRD_W, THIRD_H), V(y := y-10, -y), x := 10, z := 10, a := C('white')),
+      Object(V(2*THIRD_W, THIRD_H), V(y, y), x, z, a),
+      Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x, z, a),
+      Object(V(2*THIRD_W, 2*THIRD_H), V(-y, y), x, z, a)]
+  """  
 
   @classmethod
   def all_update(cls, dt, objects: list[Object]):
@@ -133,7 +137,7 @@ class Space:
 
       cls.W.tick().fill()
 
-      for i in [cls.o, cls.p, cls.q, cls.r]:
+      for i in [cls.t]:
         cls.all_update(cls.W.clock.get_time(), i)
         cls._normalize_positions(i)
         cls.all_draw(cls.W.screen, i)
