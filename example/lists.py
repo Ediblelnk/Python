@@ -3,7 +3,7 @@ squares = [1, 4, 9, 16, 25]
 
 #Lists can be indexed and sliced
 print(squares[0] , squares[-1]) #first and last indexes
-squares[2:] #return a new list containing the requested elements
+print(squares[2:]) #return a new list containing the requested elements
 
 #Concatenation
 squares = squares + [36, 49, 81, 100]
