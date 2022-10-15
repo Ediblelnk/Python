@@ -6,10 +6,10 @@ pygame.init()
 
 
 class Window:
-    RATIO = 16, 9
+    RATIO = 1, 1
     HEIGHT = 720
     WIDTH = HEIGHT * RATIO[0] // RATIO[1]
-    COLOR = pygame.Color('darkgreen')
+    COLOR = pygame.Color('black')
     MAX_FPS = 144
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
