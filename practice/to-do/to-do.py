@@ -8,20 +8,35 @@ Functionality:
 """
 import os
 
+class _spaces():
+  name = 20
+  month = 6
+  day = 6
+  year = 8
+  group = 10
+  notes = 30
+
 class Task():
-  groups = []
+  groups = ['']
   months = 'jan.feb.mar.apr.may.jun.jul.aug.sep.oct.nov.dec'.split(sep='.')
 
   _days31 = 'jan.mar.may.jul.aug.oct.dec'.split(sep='.')
   _days30 = 'apr.jun.sep.nov'.split(sep='.')
   _days28 = 'feb'.split(sep='.')
 
-
   def __init__(self, name: str, due_date: list[str, int, int], group: str, notes: str):
     self.name: str = name
     self.due_date: list[str, int, int] = due_date
     self.group: str = group
     self.notes: str = notes
+
+    self._validate_date(self.due_date)
+
+  def __str__(self):
+    return '- ' + self.name.ljust(_spaces.name) + self.date_str() + self.group.ljust(_spaces.group) + self.notes.ljust(_spaces.notes)
+
+  def date_str(self):
+    return self.due_date[0].ljust(_spaces.month) + str(self.due_date[1]).ljust(_spaces.day) + str(self.due_date[2]).ljust(_spaces.year)
 
   @classmethod
   def _validate_date(cls, date: list[str, int, int]):
@@ -91,7 +106,9 @@ def import_data(file):
     #lines = 
 
 def main():
-  print(Task._validate_date(['', 40, '0']))
+  t = Task('Do the Trash', ['oct', 19, 2022], 'Chores', 'make sure to replace the bags!')
+
+  print(t)
 
 
 if __name__ == '__main__':
