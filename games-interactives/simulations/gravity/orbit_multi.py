@@ -75,10 +75,10 @@ class Space:
   THIRD_H = W.HEIGHT//3
   THIRD_W = W.WIDTH//3
 
-  t = [Object(V(THIRD_W, THIRD_H), V(y := 70, -y), x := 100, z := 10, a := C('orange')),
-       Object(V(2*THIRD_W, THIRD_H), V(y, y), x//2, z, a),
-       Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x//4, z, a)]
-  """
+  # t = [Object(V(THIRD_W, THIRD_H), V(y := 70, -y), x := 100, z := 10, a := C('orange')),
+  #      Object(V(2*THIRD_W, THIRD_H), V(y, y), x//2, z, a),
+  #      Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x//4, z, a)]
+
   o = [Object(V(THIRD_W, THIRD_H), V(y := 70, -y), x := 10, z := 10, a := C('red')),
       Object(V(2*THIRD_W, THIRD_H), V(y, y), x, z, a),
       Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x, z, a),
@@ -98,7 +98,6 @@ class Space:
       Object(V(2*THIRD_W, THIRD_H), V(y, y), x, z, a),
       Object(V(THIRD_W, 2*THIRD_H), V(-y, -y), x, z, a),
       Object(V(2*THIRD_W, 2*THIRD_H), V(-y, y), x, z, a)]
-  """  
 
   @classmethod
   def all_update(cls, dt, objects: list[Object]):
@@ -137,7 +136,7 @@ class Space:
 
       cls.W.tick().fill()
 
-      for i in [cls.t]:
+      for i in [cls.o, cls.p, cls.q, cls.r]:
         cls.all_update(cls.W.clock.get_time(), i)
         cls._normalize_positions(i)
         cls.all_draw(cls.W.screen, i)
