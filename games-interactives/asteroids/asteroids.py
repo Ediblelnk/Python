@@ -1,4 +1,4 @@
-#imports and starts the moduals needed to run the program
+#imports and starts the modules needed to run the program
 import pygame 
 import sys
 from asteroid_classes import Player
