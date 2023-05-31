@@ -10,10 +10,10 @@ pygame.init()
 
 class Window:
     RATIO = 1, 1
-    HEIGHT = 540
+    HEIGHT = 1080
     WIDTH = HEIGHT * RATIO[0] // RATIO[1]
     COLOR = pygame.Color('black')
-    MAX_FPS = 120
+    MAX_FPS = 144
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
@@ -58,7 +58,7 @@ class Object:
 
         a_mag: float = Space.G * o.mass / r*r
         a_vec: V = d * a_mag
-        self.velocity -= a_vec * dt / 1000
+        self.velocity += a_vec * dt / 1000
 
     def update(self, dt: int, o):
         self._update_vel(dt, o)
@@ -75,13 +75,7 @@ class Space:
     G = 10
     W: Window = Window()
 
-    QUARTER_H = W.HEIGHT//4
-    QUARTER_W = W.WIDTH//4
-    HALF_H = W.HEIGHT//2
-    HALF_W = W.WIDTH//2
-
-    e = Object(V(HALF_W, HALF_H), V(0, 0), 81, 22, C('blue'))
-    m = Object(V(QUARTER_W, HALF_H), V(0, 500), 1, 6, C('silver'))
+    particles = [Object(V(5, 5), V(0, 0), 1, 3, C("gray")) for x, y in range(5, W.HEIGHT//2, 5), range(5, W.WIDTH, 5)]
 
     @classmethod
     def all_update(cls, dt, objects: list[Object]):
@@ -120,14 +114,11 @@ class Space:
 
             cls.W.tick().fill()
 
-            cls.m.update(cls.W.clock.get_time(), cls.e)
+            for particle in particles:
+
+                cls.particle.update(cls.W.clock.get_time(), cls.e)
             cls.m.draw(cls.W.screen)
             cls.e.draw(cls.W.screen)
-
-            e1 = 0.5 * cls.G * cls.e.mass * cls.m.mass / \
-                (cls.e.position - cls.m.position).length()
-            print("ENERGY:", e1)
-
             cls.W.update()
 
 

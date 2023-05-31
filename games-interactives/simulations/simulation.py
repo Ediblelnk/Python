@@ -1,6 +1,8 @@
 # imports and starts the modules needed to run the program
 import pygame
 import sys
+from pygame import Vector2 as V
+from pygame import Color as C
 
 pygame.init()
 
@@ -37,9 +39,24 @@ class Window:
         return cls
 
 
-# display loop
-while True:
-    if pygame.event.get(pygame.QUIT):
-        sys.exit()
+class Object:
+    def __init__(self, position: V, velocity: V, mass: float, color: C):
+        self.position = position
+        self.velocity = velocity
+        self.mass = mass
+        self.color = color
 
-    Window.tick().fill().update()
+    def _update_pos(self, dt: int):
+        self.position += self.velocity * dt / 1000
+
+
+def main():
+    while True:
+        if pygame.event.get(pygame.QUIT):
+            sys.exit()
+
+        Window.tick().fill().update()
+
+
+if __name__ == '__main__':
+    main()
